@@ -189,24 +189,16 @@ export function scrollIntoView(
   menuEl: HTMLElement,
   focusedEl: HTMLElement
 ): void {
-  const menuRect = menuEl.getBoundingClientRect();
   const focusedRect = focusedEl.getBoundingClientRect();
-  const overScroll = focusedEl.offsetHeight / 3;
 
-  if (focusedRect.bottom + overScroll > menuRect.bottom) {
-    scrollTo(
-      menuEl,
-      Math.min(
-        focusedEl.offsetTop +
-          focusedEl.clientHeight -
-          menuEl.offsetHeight +
-          overScroll,
-        menuEl.scrollHeight
-      )
-    );
-  } else if (focusedRect.top - overScroll < menuRect.top) {
-    scrollTo(menuEl, Math.max(focusedEl.offsetTop - overScroll, 0));
-  }
+  const focusedIndex = Array.prototype.indexOf.call(
+    menuEl.childNodes,
+    focusedEl
+  );
+
+  const focusedOffsetInMenu = focusedIndex * focusedRect.height;
+
+  scrollTo(menuEl, Math.min(focusedOffsetInMenu, menuEl.scrollHeight));
 }
 
 // ==============================
